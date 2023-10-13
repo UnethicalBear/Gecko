@@ -65,11 +65,19 @@ public:
         }
         #ifdef GECKO_DEBUG
         for(int x : RAM){
-            int y = x / pow(10,word-4);
-            int z = x % (int)pow(10,word-4);
+            int y = x / pow(10,word-this->__config_opcodeBits);
+            int z = x % (int)pow(10,word-this->__config_opcodeBits);
             std::cout << y << " " << z << std::endl;
         }
         #endif
+    }
+
+    void execute(){
+        for(int RAMWORD : this->__internal_RAM){
+            int _opcode = RAMWORD / pow(10,word-this->__config_opcodeBits);
+            int _operand = RAMWORD % (int)pow(10,word-this->__config_opcodeBits);
+            interpretOpcodeOperandPair(_opcode,_operand);
+        }
     }
 
     virtual void interpretOpcodeOperandPair(int opcode, int operand) = 0;   
@@ -78,5 +86,7 @@ public:
     ~Gecko() {
         
     }
+
+    
 };
 
