@@ -7,6 +7,9 @@
 *.o
 *.obj
 
+# VS stuff
+*.vcxproj*
+
 # Precompiled Headers
 *.gch
 *.pch
