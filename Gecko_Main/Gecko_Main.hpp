@@ -1,7 +1,11 @@
 #pragma once
 
+// ----------------------- Basic Setup ------------------------------------- //
+
 #define GECKO_APP
 //#define GECKO_APP_DEBUG
+
+// ----------------------- Register Congi ---------------------------------- //
 
 #define GECKO_STATUS_REG_ACC_IS_EVEN							1
 #define GECKO_STATUS_REG_ACC_IS_ODD								2
@@ -14,6 +18,13 @@
 #define GECKO_ARITHMETIC_BORROW_0								9
 #define GECKO_ARITHMETIC_BORROW_1								10
 
+// ----------------------- Integer to Binary Config ------------------------- //
 
 #define GECKO_BINSTR_CHRn                                       0
 #define GECKO_BINSTR_STDSTRING                                  1
+
+// ----------------------- String to Integer Exception Config --------------- //
+
+#define GECKO_APP_INVALID_CODE_TERMINATE						0
+#define GECKO_APP_INVALID_CODE_ADD_NULL							1
+#define GECKO_APP_INVALID_CODE_CUSTOM							2
