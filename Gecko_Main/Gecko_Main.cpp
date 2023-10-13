@@ -26,6 +26,9 @@ private:
     std::vector<int> __internal_Cache = {};
 
 public:
+    Gecko() {
+
+    }
     Gecko(int RAMAddrSize, int RAMwordSize, int opcodeBits, int cacheMemorySize, int cacheMemoryWordWidth, bool alwaysUseBinary = false) {
         this->__config_RAM_SIZE_MAX = RAMAddrSize;
         this->__config_RAM_word_width = RAMwordSize;
@@ -97,9 +100,9 @@ public:
         // reutrn this->toBinaryArray(tmp);
     }
     
-    void writeCache(int cacheAddr, int newValue);
-    void writeCache(int cacheAddr, char* newValue);
-    void writeCache(int cacheAddr, std::string newValue);
+    void writeCache(int cacheAddr, int newValue){}
+    void writeCache(int cacheAddr, char* newValue){}
+    void writeCache(int cacheAddr, std::string newValue){}
 
     ~Gecko() {
         

@@ -25,7 +25,7 @@ public:
 };
 
 int main(){
-	myGecko emulator(
+	myGecko emulator()
 }
 
 
