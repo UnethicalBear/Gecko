@@ -1,2 +1,4 @@
 ﻿  Gecko_Main.cpp
+C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(66,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(75,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   Gecko_Main.vcxproj -> C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\x64\Debug\Gecko_Main.exe
