@@ -13,3 +13,7 @@
 #define GECKO_ARITHMETIC_CARRY_1								8
 #define GECKO_ARITHMETIC_BORROW_0								9
 #define GECKO_ARITHMETIC_BORROW_1								10
+
+
+#define GECKO_BINSTR_CHRn                                       0
+#define GECKO_BINSTR_STDSTRING                                  1

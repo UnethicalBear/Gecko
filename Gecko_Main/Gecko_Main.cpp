@@ -54,7 +54,7 @@ public:
             try {
                 this->__internal_RAM.push_back(stoi(tmpWORD));
             }
-            catch(...){
+            catch(std::invalid_argument){
                 #ifdef DEBUG
                 std::cout << "Invalid";
                 #endif
@@ -83,10 +83,12 @@ public:
     virtual void interpretOpcodeOperandPair(int opcode, int operand) = 0;   
     // this turns gecko into an abstract class so it cannot be directly instantiated.
 
-    ~Gecko() {
+    
+    void readCache(int cacheAddr){
         
     }
 
-    
+    ~Gecko() {
+        
+    }
 };
-
