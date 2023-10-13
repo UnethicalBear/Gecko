@@ -1,16 +1,8 @@
 #include "Gecko_Main.hpp"
-
 #define GECKO_DEBUG
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <fstream>
-#include <stdexcept>
-#include <math.h>
-
 class Gecko {
-private:
+protected:
     int __config_RAM_word_width;
     int __config_RAM_SIZE_MAX;
     int __config_operandBits;
@@ -24,6 +16,48 @@ private:
 
     std::vector<int> __internal_RAM = {};
     std::vector<int> __internal_Cache = {};
+
+    std::string toBinaryString(int input, bool isSigned) {
+        std::string bin = "";
+        int num = input;
+        if (num < 0 && isSigned) {
+            bin += "1";
+            num = -(num + 1); // Invert the number and subtract 1 for two's complement representation
+        }
+        else {
+            bin += "0";
+        }
+
+        // Convert the number to binary representation
+        for (int i = this->__config_RAM_word_width - 1; i >= 0; --i) {
+            int bit = (num >> i) & 1;
+            bin += std::to_string(bit);
+        }
+        return bin;
+    }
+
+    const char* toBinaryArray(int input, bool isSigned) {
+        return this->toBinaryString(input, isSigned).c_str();
+    }
+
+    void writeCache(int cacheAddr, int newValue) {}
+    void writeCache(int cacheAddr, char* newValue) {}
+    void writeCache(int cacheAddr, std::string newValue) {}
+
+    int readCache(int cacheAddr) {
+        return this->__internal_Cache[cacheAddr];
+    }
+
+    std::string readCacheBinaryString(int cacheAddr) {
+        int tmp = this->readCache(cacheAddr);
+        return this->toBinaryString(tmp,false);
+    }
+
+    char* readCacheBinaryArray(int cacheAddr) {
+        return NULL;
+        // int tmp = this->readCache(cacheAddr);
+        // reutrn this->toBinaryArray(tmp);
+    }
 
 public:
     Gecko() {
@@ -83,27 +117,6 @@ public:
     virtual void interpretOpcodeOperandPair(int opcode, int operand) = 0;   
     // this turns gecko into an abstract class so it cannot be directly instantiated.
 
-    
-    int readCache(int cacheAddr){
-        return this->__internal_Cache[cacheAddr];
-    }
-
-    std::string readCacheBinaryString(int cacheAddr){
-        return "";
-        // int tmp = this->readCache(cacheAddr);
-        // return this->toBinaryString(tmp);
-    }
-
-    char* readCacheBinaryArray(int cacheAddr){
-        return NULL;
-        // int tmp = this->readCache(cacheAddr);
-        // reutrn this->toBinaryArray(tmp);
-    }
-    
-    void writeCache(int cacheAddr, int newValue){}
-    void writeCache(int cacheAddr, char* newValue){}
-    void writeCache(int cacheAddr, std::string newValue){}
-
     ~Gecko() {
         
     }
@@ -114,15 +127,15 @@ class myGecko : public Gecko {
 public:
     using Gecko::Gecko;
     void interpretOpcodeOperandPair(int opcode, int operand) override {
-
+        std::cout << this->toBinaryString(10);
     }
 };
    
 
 int main() {
-    //Gecko(int RAMAddrSize, int RAMwordSize, int opcodeBits, int cacheMemorySize, int cacheMemoryWordWidth, bool alwaysUseBinary = false) {
     std::cout << "Hello World!\n";
     myGecko g(1024, 8, 4, 16, 8, false);
     g.readRAM("input.txt");
+    g.execute();
 }
 

@@ -1,4 +1,10 @@
 #pragma once
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <stdexcept>
+#include <math.h>
 
 // ----------------------- Basic Setup ------------------------------------- //
 
@@ -29,27 +35,27 @@
 
 // ------------------------ Gecko Class Defenition Template ----------------- //
 
-class Gecko {
-public:
-	Gecko();
-	Gecko(int RAMAddrSize, int RAMwordSize, int opcodeBits, int cacheMemorySize, int cacheMemoryWordWidth, bool alwaysUseBinary = false);
+// for some reason uncommenting this breaks EVERYTHING
 
-	void readRAM(std::string inputFile);
-
-	void execute();
-	virtual void interpretOpcodeOperandPair(int opcode, int operand) = 0;
-	
-	int readCache(int cacheAddr);
-	std::string readCacheBinaryString(int cacheAddr);
-	char* readCacheBinaryArray(int cacheAddr);
-
-
-	void writeCache(int cacheAddr, int newValue);
-	void writeCache(int cacheAddr, char* newValue);
-	void writeCache(int cacheAddr, std::string newValue);
-
-
-
-
-
-};
+//class Gecko {
+//protected:
+//	std::string toBinaryString(int input, bool isSigned);
+//	const char* toBinaryArray(int input, bool isSigned);
+//
+//	int readCache(int cacheAddr);
+//	std::string readCacheBinaryString(int cacheAddr);
+//	char* readCacheBinaryArray(int cacheAddr);
+//
+//	void writeCache(int cacheAddr, int newValue);
+//	void writeCache(int cacheAddr, char* newValue);
+//	void writeCache(int cacheAddr, std::string newValue);
+//
+//public:
+//	Gecko();
+//	Gecko(int RAMAddrSize, int RAMwordSize, int opcodeBits, int cacheMemorySize, int cacheMemoryWordWidth, bool alwaysUseBinary = false);
+//
+//	void readRAM(std::string inputFile);
+//
+//	void execute();
+//	virtual void interpretOpcodeOperandPair(int opcode, int operand) = 0;
+//};
