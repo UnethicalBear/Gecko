@@ -56,7 +56,7 @@ public:
             }
             catch(std::invalid_argument){
                 #ifdef DEBUG
-                std::cout << "Invalid";
+                std::cout << "Invalid character detected - adding NULL WORD";
                 #endif
             }
             ctr=0;
@@ -84,9 +84,25 @@ public:
     // this turns gecko into an abstract class so it cannot be directly instantiated.
 
     
-    void readCache(int cacheAddr){
-        
+    int readCache(int cacheAddr){
+        return this->__internal_Cache[cacheAddr];
     }
+
+    std::string readCacheBinaryString(int cacheAddr){
+        return "";
+        // int tmp = this->readCache(cacheAddr);
+        // return this->toBinaryString(tmp);
+    }
+
+    char* readCacheBinaryArray(int cacheAddr){
+        return ["\0"];
+        // int tmp = this->readCache(cacheAddr);
+        // reutrn this->toBinaryArray(tmp);
+    }
+    
+    void writeCache(int cacheAddr, int newValue);
+    void writeCache(int cacheAddr, char* newValue);
+    void writeCache(int cacheAddr, std::string newValue);
 
     ~Gecko() {
         
