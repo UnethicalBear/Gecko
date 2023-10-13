@@ -1,13 +1,13 @@
+#include "Gecko_Main.hpp"
+
+#define GECKO_DEBUG
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include <fstream>
 #include <stdexcept>
 #include <math.h>
-
-int main(){
-    std::cout << "Hello World!\n";
-}
 
 class Gecko {
 private:
@@ -26,9 +26,6 @@ private:
     std::vector<int> __internal_Cache = {};
 
 public:
-    Gecko() {
-
-    }
     Gecko(int RAMAddrSize, int RAMwordSize, int opcodeBits, int cacheMemorySize, int cacheMemoryWordWidth, bool alwaysUseBinary = false) {
         this->__config_RAM_SIZE_MAX = RAMAddrSize;
         this->__config_RAM_word_width = RAMwordSize;
@@ -55,7 +52,7 @@ public:
                 this->__internal_RAM.push_back(stoi(tmpWORD));
             }
             catch(std::invalid_argument){
-                #ifdef DEBUG
+                #ifdef GECKO_DEBUG
                 std::cout << "Invalid character detected - adding NULL WORD";
                 #endif
             }
@@ -64,18 +61,18 @@ public:
             }
         }
         #ifdef GECKO_DEBUG
-        for(int x : RAM){
+        for(int x : this->__internal_RAM){
             int y = x / pow(10,word-this->__config_opcodeBits);
             int z = x % (int)pow(10,word-this->__config_opcodeBits);
-            std::cout << y << " " << z << std::endl;
+            std::cout << y << "|" << z << std::endl;
         }
         #endif
     }
 
     void execute(){
         for(int RAMWORD : this->__internal_RAM){
-            int _opcode = RAMWORD / pow(10,word-this->__config_opcodeBits);
-            int _operand = RAMWORD % (int)pow(10,word-this->__config_opcodeBits);
+            int _opcode = RAMWORD / pow(10,this->__config_RAM_word_width-this->__config_opcodeBits);
+            int _operand = RAMWORD % (int)pow(10,__config_RAM_word_width-this->__config_opcodeBits);
             interpretOpcodeOperandPair(_opcode,_operand);
         }
     }
@@ -95,7 +92,7 @@ public:
     }
 
     char* readCacheBinaryArray(int cacheAddr){
-        return ["\0"];
+        return NULL;
         // int tmp = this->readCache(cacheAddr);
         // reutrn this->toBinaryArray(tmp);
     }
@@ -108,3 +105,20 @@ public:
         
     }
 };
+
+
+class myGecko : public Gecko {
+public:
+    using Gecko::Gecko;
+    void interpretOpcodeOperandPair(int opcode, int operand) override {
+
+    }
+};
+   
+
+int main() {
+    //Gecko(int RAMAddrSize, int RAMwordSize, int opcodeBits, int cacheMemorySize, int cacheMemoryWordWidth, bool alwaysUseBinary = false) {
+    std::cout << "Hello World!\n";
+    myGecko g(1024, 8, 4, 16, 8, false);
+    g.readRAM("input.txt");
+}
