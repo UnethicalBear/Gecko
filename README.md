@@ -20,13 +20,50 @@ public:
 	using Gecko::Gecko;
 
 	void interpretOpcodeOperandPair(int opcode, int operand) override {
-			// Do your calculations here!
+			/* Do your calculations here!
+
+			...
+			...
+			...
+
+			*/
 	}
 };
 
 int main(){
-	myGecko emulator()
+	myGecko emulator(
+		1024,	/* size of RAM */
+		8,		/* size of one WORD in RAM */
+		4,		/* how many bits are used for the OPCODE. Operand is calculated as RAM_WORD - OPCODE */
+		16,		/* size of cache memory */
+		8		/* the bit width of one CACHE WORD */
+	);
+
+
+	myGecko.readRAM("RAM_file.txt");
+	myGecko.execute();
 }
-
-
 ```
+
+
+## Docs
+
+### class Gecko
+
+### macros
+
+#### Status Registers
+
+- GECKO_STATUS_REG_ACC_IS_EVEN
+
+Whether the accumulator's value is even.
+
+- GECKO_STATUS_REG_ACC_IS_EVEN
+
+Whether the acucumulator's value is odd.
+
+- GECKO_STATUS_REG_ACC_IS_EVEN
+
+- GECKO_STATUS_REG_ACC_IS_EVEN
+
+- GECKO_STATUS_REG_ACC_IS_EVEN
