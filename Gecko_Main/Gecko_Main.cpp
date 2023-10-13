@@ -2,6 +2,7 @@
 #include <string>
 #include <any>
 #include <vector>
+#include <fstream>
 #include <map>
 
 int main(){
@@ -20,6 +21,9 @@ class Gecko {
 
     bool __config_alwaysUseBinary = false;
 
+    std::vector<int> __internal_RAM = {};
+    std::vector<int> __internal_Cache = {};
+
 public:
     Gecko() {
 
@@ -33,17 +37,30 @@ public:
     }
 
     void readRAM(std::string inputFile) {
-
+        std::ifstream fileHandler(inputFile);
+        std::string words;
+        while(inFile >> words) {
+            #ifdef GECKO_DEBUG
+            std::cout << words << std::endl;
+            #endif
+        }
+        for (auto word : words){
+            std::cout << word << std::endl;
+        }
     }
 
     virtual void interpretOpcodeOperandPair(int opcode, int operand) = 0;   
     // this turns gecko into an abstract class so it cannot be directly instantiated.
 
 
+    
+    
+
+
+
+
     ~Gecko() {
-
+        
     }
-
-
 };
 
