@@ -125,3 +125,4 @@ int main() {
     myGecko g(1024, 8, 4, 16, 8, false);
     g.readRAM("input.txt");
 }
+

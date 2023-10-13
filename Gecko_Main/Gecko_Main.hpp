@@ -11,12 +11,9 @@
 #define GECKO_STATUS_REG_ACC_IS_ODD								2
 #define GECKO_STATUS_REG_ACC_IS_ZERO							3
 #define GECKO_STATUS_REG_ACC_IS_NON_ZERO						4
-#define GECKO_STATUS_REG_ACC_IS_GREATER_THAN_ZERO				5
-#define GECKO_STATUS_REG_ACC_PROCESSOR_OK						6
-#define GECKO_ARITHMETIC_CARRY_0								7
-#define GECKO_ARITHMETIC_CARRY_1								8
-#define GECKO_ARITHMETIC_BORROW_0								9
-#define GECKO_ARITHMETIC_BORROW_1								10
+#define GECKO_STATUS_REG_ACC_PROCESSOR_OK						5
+#define GECKO_ARITHMETIC_CARRY									6
+#define GECKO_ARITHMETIC_BORROW									7
 
 // ----------------------- Integer to Binary Config ------------------------- //
 
