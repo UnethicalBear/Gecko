@@ -58,12 +58,26 @@ int main(){
 
 Whether the accumulator's value is even.
 
-- GECKO_STATUS_REG_ACC_IS_EVEN
+- GECKO_STATUS_REG_ACC_IS_ODD
 
-Whether the acucumulator's value is odd.
+Whether the accumulator's value is even.
 
-- GECKO_STATUS_REG_ACC_IS_EVEN
+- GECKO_STATUS_REG_ACC_IS_ZERO
 
-- GECKO_STATUS_REG_ACC_IS_EVEN
+Whether the accumulator's value is zero.
 
-- GECKO_STATUS_REG_ACC_IS_EVEN
+- GECKO_STATUS_REG_ACC_IS_NON_ZERO
+
+Whether the accumulator's value is non-zero.
+
+- GECKO_STATUS_REG_ACC_PROCESSOR_OK
+
+Whether the processor is operating normally.
+
+- GECKO_ARITHMETIC_CARRY
+
+Carry bit from ALU operation.
+
+- GECKO_ARITHMETIC_BORROW
+
+Borrow bit from ALU operation. Can be integrated into GECKO_ARITHMETIC_CARRY register
