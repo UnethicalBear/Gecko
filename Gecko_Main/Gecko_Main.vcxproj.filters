@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Gecko_Main.cpp">
+    <ClCompile Include="Gecko.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -28,7 +28,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Gecko_Main.hpp">
+    <ClInclude Include="Gecko.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

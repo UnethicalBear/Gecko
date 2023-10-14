@@ -5,6 +5,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <math.h>
+#include <any>
 
 // ----------------------- Basic Setup ------------------------------------- //
 
@@ -19,10 +20,13 @@
 #define GECKO_REG_ACC_IS_NON_ZERO								4
 #define GECKO_REG_PROCESSOR_OK									5
 
+#define GECKO_REG_USE_INT_ID									0	// use integer IDs to address registers
+#define GECKO_REG_USE_STR_ID									1	// use string IDs to address registers.
+
 // ------------------------ Arithmetic -------------------------------------- //
 
-#define GECKO_ARITHMETIC_CARRY									6
-#define GECKO_ARITHMETIC_BORROW									7		// } these are also registers
+#define GECKO_ARITHMETIC_CARRY									6	// CARRY register from addition, can be combined with BORROW.
+#define GECKO_ARITHMETIC_BORROW									7	// BORROW register from subtraction, can be combined to CARRY.
 
 #define GECKO_USE_SIGNED_INTS									0
 #define GECKO_USE_UNSIGNED_INTS									1

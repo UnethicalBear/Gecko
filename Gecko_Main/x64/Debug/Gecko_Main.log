@@ -1,16 +1,4 @@
-﻿  Gecko_Main.cpp
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(5,13): error C2011: 'Gecko': 'class' type redefinition
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.hpp(41,7): message : see declaration of 'Gecko'
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(127,24): error C2504: 'Gecko': base class undefined
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(129,18): error C2027: use of undefined type 'Gecko'
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.hpp(41,7): message : see declaration of 'Gecko'
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(129,5): error C3881: can only inherit constructor from direct base
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(130,10): error C3668: 'myGecko::interpretOpcodeOperandPair': method with override specifier 'override' did not override any base class methods
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(131,28): error C2039: 'toBinaryString': is not a member of 'myGecko'
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(127,7): message : see declaration of 'myGecko'
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(138,14): error C2661: 'myGecko::myGecko': no overloaded function takes 6 arguments
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(138,14): message : while trying to match the argument list '(int, int, int, int, int, bool)'
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(139,7): error C2039: 'readRAM': is not a member of 'myGecko'
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(127,7): message : see declaration of 'myGecko'
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(140,7): error C2039: 'execute': is not a member of 'myGecko'
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko_Main.cpp(127,7): message : see declaration of 'myGecko'
+﻿  Gecko.cpp
+C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko.cpp(119,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko.cpp(129,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Gecko_Main.vcxproj -> C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\x64\Debug\Gecko_Main.exe
