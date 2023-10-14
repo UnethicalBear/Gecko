@@ -115,25 +115,31 @@ public:
         #endif
     }
 
-    void execute(){
+    bool execute(){
         for(int RAMWORD : this->__internal_RAM){
             int _opcode = RAMWORD / pow(10,this->__config_RAM_word_width-this->__config_opcodeBits);
             int _operand = RAMWORD % (int)pow(10,__config_RAM_word_width-this->__config_opcodeBits);
             interpretOpcodeOperandPair(_opcode,_operand);
         }
     }
-
-    virtual void interpretOpcodeOperandPair(int opcode, int operand) = 0;   
     // this turns gecko into an abstract class so it cannot be directly instantiated.
-
+    virtual void interpretOpcodeOperandPair(int opcode, int operand) = 0;   
     virtual void setupRegisters() = 0;
 
-    bool quickRun(std::string inputFile) {
-        bool ok = this->start();
-        if (ok) {
-            ok = this->readRAM(inputFile);
-            this->
+    bool quickSetup(std::string inputFile) {
+        if (this->start()) {
+            return this->readRAM(inputFile);
         }
+        return false;
+    }
+
+    bool quickRun(std::string inputFile) {
+        if (this->start()){
+            if (this->readRAM(inputFile)) {
+                return this->execute();
+            }
+        }
+        return false;
     }
 
     ~Gecko() {
@@ -150,7 +156,6 @@ public:
     }
     void setupRegisters() override {
         this->REGISTER_CONFIG = {
-            0
         };
     }
 };

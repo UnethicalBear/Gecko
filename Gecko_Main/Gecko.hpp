@@ -13,11 +13,11 @@
 
 // ----------------------- Register Config ---------------------------------- //
 
-#define GECKO_STATUS_REG_ACC_IS_EVEN							1
-#define GECKO_STATUS_REG_ACC_IS_ODD								2
-#define GECKO_STATUS_REG_ACC_IS_ZERO							3
-#define GECKO_STATUS_REG_ACC_IS_NON_ZERO						4
-#define GECKO_STATUS_REG_ACC_PROCESSOR_OK						5
+#define GECKO_REG_ACC_IS_EVEN									1
+#define GECKO_REG_ACC_IS_ODD									2
+#define GECKO_REG_ACC_IS_ZERO									3
+#define GECKO_REG_ACC_IS_NON_ZERO								4
+#define GECKO_REG_PROCESSOR_OK									5
 
 // ------------------------ Arithmetic -------------------------------------- //
 
