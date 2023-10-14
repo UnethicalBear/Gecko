@@ -140,6 +140,8 @@ public:
         //
         this->__internal_registerCombineCarryBorrow = combineCarryBorrowReg;
         this->__internal_bootloaderFailSafe = bootloaderErrorCodeHandler;
+
+        return true;
     }
     
     bool executeBootloader(std::string inputFile) {
@@ -163,6 +165,18 @@ public:
                     std::cout << "Invalid character sequence detected!";
                     #endif
 
+                    switch (this->__internal_bootloaderFailSafe) {
+                    case GECKO_APP_INVALID_CODE_ADD_NULL:
+                        this->__internal_RAM.push_back(0);
+                        break;
+                    
+                    case GECKO_APP_INVALID_CODE_TERMINATE:
+                        throw std::invalid_argument("Invalid code loaded from bootloader: " + tmpWORD);
+                        break;
+
+                    case GECKO_APP_INVALID_CODE_CUSTOM:
+                        this->returnCustomBootloaderSafeCode(tmpWORD);
+                    }
 
                 }
                 ctr=0;
@@ -197,6 +211,8 @@ public:
     // this turns Gecko into an abstract class so it cannot be directly instantiated.
     virtual void interpretOpcodeOperandPair(int opcode, int operand) = 0;   
     virtual bool setup() = 0;
+       
+    int returnCustomBootloaderSafeCode(std::string codeRead) { return 0; }   // Overrided by the user if needed.
 
     // ================= QUICK EXEC ====================== //
 
@@ -260,7 +276,7 @@ public:
 
 int main() {
     myGecko g(1024, 8, 4, 16, 8, false); // You can also hard code these in your custom class if you want, and then have an empty constuctor.
-    g.config(GECKO_USE_UNSIGNED_INTS, GECKO_REG_USE_STR_ID, false, GECKO_APP_INVALID_CODE_CUSTOM);
+    g.config(GECKO_USE_UNSIGNED_INTS, GECKO_REG_USE_STR_ID, false, GECKO_APP_INVALID_CODE_TERMINATE);
     g.setup();
     g.executeBootloader("input.txt");
     g.execute();
