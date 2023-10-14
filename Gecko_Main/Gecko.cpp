@@ -23,7 +23,10 @@ protected:
     int GENERAL_PURPOSE_REGISTER_CONFIG = 0;
     int ACC_REGISTER_CONFIG = 0;
 
-    std::string toBinaryString(int input, bool isSigned) {
+    bool useSignedIntegers = false;
+
+
+    std::string toBinaryString(int input, bool isSigned) {  // convert integer to a std::string binary representation.
         std::string bin = "";
         int num = input;
         if (num < 0 && isSigned) {
@@ -48,23 +51,28 @@ protected:
 
     // Cache Operations
 
-    void writeCache(int cacheAddr, int newValue){
+    void writeCache(int cacheLevel, int cacheAddr, int newValue){
 
     }
-    void writeCache(int cacheAddr, char* newValue){
+    void writeCache(int cacheLevel, int cacheAddr, char* newValue){
     
     }
-    void writeCache(int cacheAddr, std::string newValue){
+    void writeCache(int cacheLevel, int cacheAddr, std::string newValue){
     
     }
 
-    int readCache(int cacheAddr) {
+    int readCache(int cacheLevel, int cacheAddr) {
         return this->__internal_Cache[cacheAddr];
     }
 
-    std::string readCacheBinaryString(int cacheAddr) {
-        int tmp = this->readCache(cacheAddr);
-        return this->toBinaryString(tmp,false);
+    std::string readCache(std::string cacheLevel, std::string cacheAddr) {
+        return toBinaryString(
+            readCache(
+                stoi(cacheLevel, 0, 2), 
+                stoi(cacheAddr, 0, 2)
+           ), 
+           this->useSignedIntegers
+        );
     }
 
     char* readCacheBinaryArray(int cacheAddr) {
@@ -148,7 +156,7 @@ public:
     }
     // this turns gecko into an abstract class so it cannot be directly instantiated.
     virtual void interpretOpcodeOperandPair(int opcode, int operand) = 0;   
-    virtual void setupRegisters() = 0;
+    virtual void setup() = 0;
 
     bool quickSetup(std::string inputFile) {
         if (this->start()) {
@@ -171,14 +179,18 @@ public:
     }
 };
 
+// ------------------------- Custom implementation ------------------------ //
 
 class myGecko : public Gecko {
 public:
     using Gecko::Gecko;
     void interpretOpcodeOperandPair(int opcode, int operand) override {
-        std::cout << this->toBinaryString(10, false);
+        std::cout << this->toBinaryString(10, this->useSignedIntegers);
     }
-    void setupRegisters() override {
+    void setup() override {
+           
+        this->useSignedIntegers = GECKO_USE_SIGNED_INTS;
+
         this->ACC_REGISTER_CONFIG = GECKO_REG_USE_STR_ID;
         this->GENERAL_PURPOSE_REGISTER_CONFIG = GECKO_REG_USE_STR_ID;
 
