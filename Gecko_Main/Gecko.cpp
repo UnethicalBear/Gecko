@@ -18,9 +18,7 @@ protected:
     std::vector<int> __internal_RAM = {};
     std::vector<std::vector<int>> __internal_Cache = {};
     std::map<std::string, int> __internal_stringRegisters = {};
-public:
     int* __internal_intRegisters;
-protected:
 
     std::vector<int> STATUS_REGISTER_CONFIG = {};
     std::vector<int> GENERAL_PURPOSE_REGISTERS = {};
@@ -116,6 +114,16 @@ public:
         this->__config_opcodeBits = 0;
         this->__config_operandBits = 0;
     }
+    Gecko(int RAMAddrSize, int RAMwordSize, int opcodeBits, int cacheMemorySize, int cacheMemoryWordWidth, bool alwaysUseBinary = false) {
+        this->__config_RAM_SIZE_MAX = RAMAddrSize;
+        this->__config_RAM_word_width = RAMwordSize;
+        this->__config_alwaysUseBinary = alwaysUseBinary;
+        this->__config_cacheMemorySize = new int { cacheMemorySize };
+        this->__config_cacheMemoryWidth = new int{ cacheMemoryWordWidth };
+
+        this->__config_opcodeBits = opcodeBits;
+        this->__config_operandBits = RAMwordSize - opcodeBits;
+    }
     Gecko(int RAMAddrSize, int RAMwordSize, int opcodeBits, int* cacheMemorySize, int* cacheMemoryWordWidth, bool alwaysUseBinary = false) {
         this->__config_RAM_SIZE_MAX = RAMAddrSize;
         this->__config_RAM_word_width = RAMwordSize;
@@ -127,32 +135,39 @@ public:
         this->__config_operandBits = RAMwordSize - opcodeBits;
     }
     
-    bool readRAM(std::string inputFile) {
+    bool executeBootloader(std::string inputFile) {
         std::ifstream fileHandler(inputFile);
         std::string words;
         char ch;
         std::string tmpWORD = "";
         int ctr = 0;
         while (fileHandler.get(ch)){
+            if (isspace(ch)) {
+                continue;
+            }
             tmpWORD += ch;
             ctr++;
             if (ctr == this->__config_RAM_word_width){
-            try {
-                this->__internal_RAM.push_back(stoi(tmpWORD));
-            }
-            catch(std::invalid_argument){
-                #ifdef GECKO_DEBUG
-                std::cout << "Invalid character detected - adding NULL WORD";
-                #endif
-            }
-            ctr=0;
-            tmpWORD = "";
+                try {
+                    this->__internal_RAM.push_back(stoi(tmpWORD));
+                }
+                catch(std::invalid_argument){
+                    #ifdef GECKO_DEBUG
+                    std::cout << "Invalid character detected - adding NULL WORD";
+                    #endif
+                }
+                ctr=0;
+                tmpWORD = "";
             }
         }
         #ifdef GECKO_DEBUG
         for(int x : this->__internal_RAM){
-            int y = x / pow(10, __config_RAM_word_width-this->__config_opcodeBits);
-            int z = x % (int)pow(10, __config_RAM_word_width-this->__config_opcodeBits);
+            /*int y = x / pow(10, __config_RAM_word_width-this->__config_opcodeBits);*/
+            //int z = x % (int)pow(10, __config_RAM_word_width-this->__config_opcodeBits);
+            std::string w = std::to_string(x);
+            if (w.size() == 7) { w = "0" + w; }
+            std::string y = w.substr(0, this->__config_opcodeBits);
+            std::string z = w.substr(this->__config_opcodeBits);
             std::cout << y << "|" << z << std::endl;
         }
         #endif
@@ -167,25 +182,32 @@ public:
         }
         return true;
     }
+
+    // ================ VIRTUAL FUNCTIONS ================ //
+
     // this turns Gecko into an abstract class so it cannot be directly instantiated.
     virtual void interpretOpcodeOperandPair(int opcode, int operand) = 0;   
     virtual bool setup() = 0;
 
+    // ================= QUICK EXEC ====================== //
+
     bool quickSetup(std::string inputFile) {
         if (this->setup()) {
-            return this->readRAM(inputFile);
+            return this->executeBootloader(inputFile);
         }
         return false;
     }
 
     bool quickRun(std::string inputFile) {
         if (this->setup()){
-            if (this->readRAM(inputFile)) {
+            if (this->executeBootloader(inputFile)) {
                 return this->execute();
             }
         }
         return false;
     }
+
+    // ===================== DESTRUCTORS =================== //
 
     ~Gecko() {
         
@@ -197,9 +219,8 @@ public:
 class myGecko : public Gecko {
 public:
     using Gecko::Gecko;
-    void interpretOpcodeOperandPair(int opcode, int operand) override {
-        std::cout << this->toBinaryString(10, this->useSignedIntegers);
-    }
+    void interpretOpcodeOperandPair(int opcode, int operand) override {}
+    
     bool setup() override {
            
         this->useSignedIntegers = GECKO_USE_SIGNED_INTS;
@@ -229,12 +250,14 @@ public:
         return true;
     }
 };
-   
 
 int main() {
-    myGecko g(1024, 8, 4, { 16 }, { 8 }, false); // You can also hard code these in your custom class if you want, and then have an empty constuctor.
+    myGecko g(1024, 8, 4, 16, 8, false); // You can also hard code these in your custom class if you want, and then have an empty constuctor.
     g.setup();
-    g.__internal_intRegisters;
+    g.executeBootloader("input.txt");
+    g.execute();
+
+    // Breakpoint so I can actually debug this mess.
     int i;
     std::cin >> i;
 }
