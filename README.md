@@ -47,37 +47,4 @@ int main(){
 
 
 ## Docs
-
-### class Gecko
-
-### macros
-
-#### Status Registers
-
-- GECKO_STATUS_REG_ACC_IS_EVEN
-
-Whether the accumulator's value is even.
-
-- GECKO_STATUS_REG_ACC_IS_ODD
-
-Whether the accumulator's value is even.
-
-- GECKO_STATUS_REG_ACC_IS_ZERO
-
-Whether the accumulator's value is zero.
-
-- GECKO_STATUS_REG_ACC_IS_NON_ZERO
-
-Whether the accumulator's value is non-zero.
-
-- GECKO_STATUS_REG_ACC_PROCESSOR_OK
-
-Whether the processor is operating normally.
-
-- GECKO_ARITHMETIC_CARRY
-
-Carry bit from ALU operation.
-
-- GECKO_ARITHMETIC_BORROW
-
-Borrow bit from ALU operation. Can be integrated into GECKO_ARITHMETIC_CARRY register
+For documentation, see the wiki tab.
