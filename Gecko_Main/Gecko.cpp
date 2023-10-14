@@ -11,7 +11,10 @@ protected:
     int* __config_cacheMemorySize;      // list of cache sizes by level, e.g. [16,128,256]
     int* __config_cacheMemoryWidth;     // list of cache widths by level, e.g. [8,8,8]
 
-    int __reg_accumulator = 0;
+    bool    __internal_useSignedIntegers = false;
+    int     __internal_bootloaderFailSafe;
+    bool    __internal_registerCombineCarryBorrow;
+    int     __internal_bootloaderInputBase = 2;
 
     bool __config_alwaysUseBinary = false;
 
@@ -25,9 +28,6 @@ protected:
 
     int GENERAL_PURPOSE_REGISTER_CONFIG = 0;
     int ACC_REGISTER_CONFIG = 0;
-
-    bool useSignedIntegers = false;
-
 
     std::string toBinaryString(int input, bool isSigned) {  // convert integer to a std::string binary representation.
         std::string bin = "";
@@ -74,7 +74,7 @@ protected:
                 stoi(cacheLevel, 0, 2), 
                 stoi(cacheAddr, 0, 2)
            ), 
-           this->useSignedIntegers
+           this->__internal_useSignedIntegers
         );
     }
 
@@ -134,6 +134,13 @@ public:
         this->__config_opcodeBits = opcodeBits;
         this->__config_operandBits = RAMwordSize - opcodeBits;
     }
+
+    bool config(bool useSignedIntegers = false, bool useRegisterStringIDs = true, bool combineCarryBorrowReg = true, int bootloaderErrorCodeHandler = 0){
+        this->__internal_useSignedIntegers = useSignedIntegers;
+        //
+        this->__internal_registerCombineCarryBorrow = combineCarryBorrowReg;
+        this->__internal_bootloaderFailSafe = bootloaderErrorCodeHandler;
+    }
     
     bool executeBootloader(std::string inputFile) {
         std::ifstream fileHandler(inputFile);
@@ -153,8 +160,10 @@ public:
                 }
                 catch(std::invalid_argument){
                     #ifdef GECKO_DEBUG
-                    std::cout << "Invalid character detected - adding NULL WORD";
+                    std::cout << "Invalid character sequence detected!";
                     #endif
+
+
                 }
                 ctr=0;
                 tmpWORD = "";
@@ -223,8 +232,6 @@ public:
     
     bool setup() override {
            
-        this->useSignedIntegers = GECKO_USE_SIGNED_INTS;
-
         this->ACC_REGISTER_CONFIG = GECKO_REG_USE_INT_ID;
         this->GENERAL_PURPOSE_REGISTER_CONFIG = GECKO_REG_USE_INT_ID;
 
@@ -253,6 +260,7 @@ public:
 
 int main() {
     myGecko g(1024, 8, 4, 16, 8, false); // You can also hard code these in your custom class if you want, and then have an empty constuctor.
+    g.config(GECKO_USE_UNSIGNED_INTS, GECKO_REG_USE_STR_ID, false, GECKO_APP_INVALID_CODE_CUSTOM);
     g.setup();
     g.executeBootloader("input.txt");
     g.execute();
