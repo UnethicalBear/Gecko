@@ -31,8 +31,13 @@
 #define GECKO_USE_SIGNED_INTS									0
 #define GECKO_USE_UNSIGNED_INTS									1
 
+#define GECKO_BOOTLOADER_INPUT_BINARY							2
+#define GECKO_BOOTLOADER_INPUT_OCTAL							8
+#define GECKO_BOOTLOADER_INPUT_DENARY							10
+#define GECKO_BOOTLOADER_INPUT_HEX								16
 
 // ----------------------- Integer to Binary Config ------------------------- //
+// dont think these are needed actually.
 
 #define GECKO_BINSTR_CHRn                                       0
 #define GECKO_BINSTR_STDSTRING                                  1
