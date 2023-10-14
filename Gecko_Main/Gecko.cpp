@@ -2,20 +2,25 @@
 #define GECKO_DEBUG
 
 class Gecko {
+// =============== START OF PROTECTED METHODS ============= //
 protected:
     int __config_RAM_word_width;
     int __config_RAM_SIZE_MAX;
     int __config_operandBits;
     int __config_opcodeBits;
-    int __config_cacheMemorySize;
-    int __config_cacheMemoryWidth;
+    int* __config_cacheMemorySize;      // list of cache sizes by level, e.g. [16,128,256]
+    int* __config_cacheMemoryWidth;     // list of cache widths by level, e.g. [8,8,8]
 
     int __reg_accumulator = 0;
 
     bool __config_alwaysUseBinary = false;
 
     std::vector<int> __internal_RAM = {};
-    std::vector<int> __internal_Cache = {};
+    std::vector<std::vector<int>> __internal_Cache = {};
+    std::map<std::string, int> __internal_stringRegisters = {};
+public:
+    int* __internal_intRegisters;
+protected:
 
     std::vector<int> STATUS_REGISTER_CONFIG = {};
     std::vector<int> GENERAL_PURPOSE_REGISTERS = {};
@@ -46,7 +51,7 @@ protected:
     }
 
     const char* toBinaryArray(int input, bool isSigned) {
-        return this->toBinaryString(input, isSigned).c_str();
+        return this->toBinaryString(input, isSigned).c_str(); // NOQA
     }
 
     // Cache Operations
@@ -62,7 +67,7 @@ protected:
     }
 
     int readCache(int cacheLevel, int cacheAddr) {
-        return this->__internal_Cache[cacheAddr];
+        return this->__internal_Cache[cacheLevel][cacheAddr];
     }
 
     std::string readCache(std::string cacheLevel, std::string cacheAddr) {
@@ -75,18 +80,33 @@ protected:
         );
     }
 
-    char* readCacheBinaryArray(int cacheAddr) {
-        return NULL;
-        // int tmp = this->readCache(cacheAddr);
-        // reutrn this->toBinaryArray(tmp);
+    const char* readCacheBinaryArray(const char* cacheLevel, const char* cacheAddr) {
+        return this->readCache(std::string(cacheLevel), std::string(cacheAddr)).c_str();
     }
 
-    void SetupGeneralPurposeRegisters(std::vector<std::string>s) {
-
+    void SetupStringRegisters(std::vector<std::string>s) {
+        for (std::string _register : s) {
+            this->__internal_stringRegisters.insert({ _register,0 });
+        }
+        this->__internal_stringRegisters.insert({ "ACC",0 });
+        this->__internal_stringRegisters.insert({ "PC",0 });
     }
-    
 
+
+    void SetupIntegerRegisters(int noOfRegisters) {
+        // This doesnt include PC and ACC registers (0 and 1 respectively).
+        noOfRegisters += 2;
+        this->__internal_intRegisters = new int[noOfRegisters];
+        for (int i = 0; i < noOfRegisters; ++i) {
+            __internal_intRegisters[i] = 0;
+        }
+    }
+
+    // ================= END OF PROTECTED METHODS ===================== //
+    // ================= START OF PUBLIC METHODS  ===================== //
 public:
+
+
     Gecko() {
         this->__config_RAM_SIZE_MAX = 0;
         this->__config_RAM_word_width = 0;
@@ -96,7 +116,7 @@ public:
         this->__config_opcodeBits = 0;
         this->__config_operandBits = 0;
     }
-    Gecko(int RAMAddrSize, int RAMwordSize, int opcodeBits, int cacheMemorySize, int cacheMemoryWordWidth, bool alwaysUseBinary = false) {
+    Gecko(int RAMAddrSize, int RAMwordSize, int opcodeBits, int* cacheMemorySize, int* cacheMemoryWordWidth, bool alwaysUseBinary = false) {
         this->__config_RAM_SIZE_MAX = RAMAddrSize;
         this->__config_RAM_word_width = RAMwordSize;
         this->__config_alwaysUseBinary = alwaysUseBinary;
@@ -107,13 +127,6 @@ public:
         this->__config_operandBits = RAMwordSize - opcodeBits;
     }
     
-    bool start() {
-
-        return true;
-    }
-
-
-
     bool readRAM(std::string inputFile) {
         std::ifstream fileHandler(inputFile);
         std::string words;
@@ -154,19 +167,19 @@ public:
         }
         return true;
     }
-    // this turns gecko into an abstract class so it cannot be directly instantiated.
+    // this turns Gecko into an abstract class so it cannot be directly instantiated.
     virtual void interpretOpcodeOperandPair(int opcode, int operand) = 0;   
-    virtual void setup() = 0;
+    virtual bool setup() = 0;
 
     bool quickSetup(std::string inputFile) {
-        if (this->start()) {
+        if (this->setup()) {
             return this->readRAM(inputFile);
         }
         return false;
     }
 
     bool quickRun(std::string inputFile) {
-        if (this->start()){
+        if (this->setup()){
             if (this->readRAM(inputFile)) {
                 return this->execute();
             }
@@ -187,12 +200,12 @@ public:
     void interpretOpcodeOperandPair(int opcode, int operand) override {
         std::cout << this->toBinaryString(10, this->useSignedIntegers);
     }
-    void setup() override {
+    bool setup() override {
            
         this->useSignedIntegers = GECKO_USE_SIGNED_INTS;
 
-        this->ACC_REGISTER_CONFIG = GECKO_REG_USE_STR_ID;
-        this->GENERAL_PURPOSE_REGISTER_CONFIG = GECKO_REG_USE_STR_ID;
+        this->ACC_REGISTER_CONFIG = GECKO_REG_USE_INT_ID;
+        this->GENERAL_PURPOSE_REGISTER_CONFIG = GECKO_REG_USE_INT_ID;
 
         this->STATUS_REGISTER_CONFIG = {           // ALU status / processing registers
             GECKO_REG_ACC_IS_NON_ZERO,
@@ -201,22 +214,28 @@ public:
             GECKO_ARITHMETIC_CARRY
         };
         // Program Counter and Accumulator are automatically instantiated. They are 0 and 1 respectively. When using strings they are PC and ACC
-        // if using INT IDs, just call this->autoSetupGPR(noOfRegisters);
+        // if using INT IDs, just call this->SetupIntegerRegisters(noOfRegisters);
 
-        this->SetupGeneralPurposeRegisters({
+       /* this->SetupStringRegisters({
                 "MDR",
                 "MAR",
                 "OUTC",
                 "OUTD",
                 "GP0",
                 "GP1"
-        });
+        });*/
+
+        this->SetupIntegerRegisters(6);
+        return true;
     }
 };
    
 
 int main() {
-    myGecko g(1024, 8, 4, 16, 8,  false); // You can also hard code these in your custom class if you want, and then have an empty constuctor.
-    g.quickRun("input.txt"); // Batch start, configure, read RAM and then execute in one function. Will not procced to the next task unless the previous one was successfull.
+    myGecko g(1024, 8, 4, { 16 }, { 8 }, false); // You can also hard code these in your custom class if you want, and then have an empty constuctor.
+    g.setup();
+    g.__internal_intRegisters;
+    int i;
+    std::cin >> i;
 }
 

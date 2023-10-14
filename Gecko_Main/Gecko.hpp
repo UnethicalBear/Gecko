@@ -5,6 +5,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <math.h>
+#include <map>
 
 // ----------------------- Basic Setup ------------------------------------- //
 
