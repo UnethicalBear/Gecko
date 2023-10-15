@@ -23,7 +23,7 @@ protected:
     std::map<std::string, int> __internal_stringRegisters = {};
     int* __internal_intRegisters;
 
-    std::vector<int> STATUS_REGISTER_CONFIG = {};
+    std::map<int,int> STATUS_REGISTER_CONFIG = {};
     std::vector<int> GENERAL_PURPOSE_REGISTERS = {};
 
     int GENERAL_PURPOSE_REGISTER_CONFIG = 0;
@@ -52,16 +52,43 @@ protected:
         return this->toBinaryString(input, isSigned).c_str(); // NOQA
     }
 
+    void updateAccumulatorStatusRegister(int newValue) {
+        for (auto const& [key, val] : this->STATUS_REGISTER_CONFIG){
+            switch (key) {
+            case GECKO_REG_ACC_IS_EVEN:
+                this->STATUS_REGISTER_CONFIG[GECKO_REG_ACC_IS_EVEN] = newValue % 2;
+                break;
+            case GECKO_REG_ACC_IS_ODD:
+                this->STATUS_REGISTER_CONFIG[GECKO_REG_ACC_IS_ODD] = (newValue++) % 2;
+                break;
+            case GECKO_REG_ACC_IS_NON_ZERO:
+                this->STATUS_REGISTER_CONFIG[GECKO_REG_ACC_IS_NON_ZERO] = (newValue != 0);
+                break;
+            case GECKO_REG_ACC_IS_ZERO:
+                this->STATUS_REGISTER_CONFIG[GECKO_REG_ACC_IS_ZERO] = (newValue == 0);
+                break;
+            }
+        }
+    }
+
     // Cache Operations
 
     void writeCache(int cacheLevel, int cacheAddr, int newValue){
 
     }
-    void writeCache(int cacheLevel, int cacheAddr, char* newValue){
-    
+    void writeCache(const char * cacheLevel, const char * cacheAddr, const char * newValue){
+        writeCache(
+            std::stoi(cacheLevel),
+            std::stoi(cacheAddr),
+            std::stoi(newValue)
+        );
     }
-    void writeCache(int cacheLevel, int cacheAddr, std::string newValue){
-    
+    void writeCache(std::string cacheLevel, std::string cacheAddr, std::string newValue){
+        writeCache(
+            std::stoi(cacheLevel),
+            std::stoi(cacheAddr),
+            std::stoi(newValue)
+        );
     }
 
     int readCache(int cacheLevel, int cacheAddr) {
@@ -244,32 +271,29 @@ public:
 class myGecko : public Gecko {
 public:
     using Gecko::Gecko;
-    void interpretOpcodeOperandPair(int opcode, int operand) override {}
+    void interpretOpcodeOperandPair(int opcode, int operand) override { this->updateAccumulatorStatusRegister(10); }
     
     bool setup() override {
            
         this->ACC_REGISTER_CONFIG = GECKO_REG_USE_INT_ID;
-        this->GENERAL_PURPOSE_REGISTER_CONFIG = GECKO_REG_USE_INT_ID;
+        this->GENERAL_PURPOSE_REGISTER_CONFIG = GECKO_REG_USE_STR_ID;
 
         this->STATUS_REGISTER_CONFIG = {           // ALU status / processing registers
-            GECKO_REG_ACC_IS_NON_ZERO,
-            GECKO_REG_PROCESSOR_OK,
-            GECKO_REG_ACC_IS_ODD,
-            GECKO_ARITHMETIC_CARRY
+            {GECKO_REG_ACC_IS_NON_ZERO,0},
+            {GECKO_REG_PROCESSOR_OK,0},
+            {GECKO_REG_ACC_IS_ODD,0},
+            {GECKO_ARITHMETIC_CARRY,0}
         };
         // Program Counter and Accumulator are automatically instantiated. They are 0 and 1 respectively. When using strings they are PC and ACC
-        // if using INT IDs, just call this->SetupIntegerRegisters(noOfRegisters);
 
-       /* this->SetupStringRegisters({
+        this->SetupStringRegisters({
                 "MDR",
                 "MAR",
                 "OUTC",
                 "OUTD",
                 "GP0",
                 "GP1"
-        });*/
-
-        this->SetupIntegerRegisters(6);
+        });
         return true;
     }
 };
