@@ -46,7 +46,18 @@
 
 #define GECKO_APP_INVALID_CODE_TERMINATE						0
 #define GECKO_APP_INVALID_CODE_ADD_NULL							1
-#define GECKO_APP_INVALID_CODE_CUSTOM							2
+#define GECKO_APP_INVALID_CODE_CUSTOM							2#
+
+
+// ------------------------ Gecko Quick Cache Operations -------------------- //
+
+#define GECKO_CACHE_QUICK_OFF                                   0
+#define GECKO_CACHE_QUICK_LAST_OPCODE                           1
+#define GECKO_CACHE_QUICK_LAST_OPERAND                          2
+#define GECKO_CACHE_QUICK_ACC_VALUE                             3
+#define GECKO_CACHE_QUICK_LAST_OPCODE                           4
+
+
 
 
 // ------------------------ Gecko Class Defenition Template ----------------- //

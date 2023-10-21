@@ -1,5 +1,5 @@
-#define GECKO_DEBUG
 #define GECKO_APP
+#define GECKO_DEBUG
 #include "Gecko.hpp"
 
 class myGecko : public Gecko {
