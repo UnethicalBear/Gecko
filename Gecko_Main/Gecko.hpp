@@ -58,7 +58,10 @@
 #define GECKO_CACHE_QUICK_LAST_OPCODE                           4
 
 
+// ------------------------- Harvard / Von Neumann Definitions -------------- //
 
+#define GECKO_ARCH_VON_NEUMANN                                  0
+#define GECKO_ARCH_HAVARD                                       1
 
 // ------------------------ Gecko Class Defenition Template ----------------- //
 
