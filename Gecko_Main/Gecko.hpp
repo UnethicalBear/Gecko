@@ -36,6 +36,8 @@
 #define GECKO_BOOTLOADER_INPUT_DENARY							10
 #define GECKO_BOOTLOADER_INPUT_HEX								16
 
+// ----------------------- Carry / Borrow Logic ---------------------------- //
+
 // ----------------------- Integer to Binary Config ------------------------- //
 // dont think these are needed actually.
 
@@ -46,7 +48,7 @@
 
 #define GECKO_APP_INVALID_CODE_TERMINATE						0
 #define GECKO_APP_INVALID_CODE_ADD_NULL							1
-#define GECKO_APP_INVALID_CODE_CUSTOM							2#
+#define GECKO_APP_INVALID_CODE_CUSTOM							2
 
 
 // ------------------------ Gecko Quick Cache Operations -------------------- //
