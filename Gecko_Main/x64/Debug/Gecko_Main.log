@@ -1,5 +1,6 @@
 ﻿  Gecko.cpp
 C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko.hpp(60,1): warning C4005: 'GECKO_CACHE_QUICK_LAST_OPCODE': macro redefinition
 C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko.hpp(57,1): message : see previous definition of 'GECKO_CACHE_QUICK_LAST_OPCODE'
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko.hpp(304,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko.cpp(48,9): error C2059: syntax error: '}'
+C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko.hpp(185,34): warning C5033: 'register' is no longer a supported storage class
+C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\Gecko.hpp(311,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Gecko_Main.vcxproj -> C:\Users\Leon\Coding\Gecko\Gecko\Gecko_Main\x64\Debug\Gecko_Main.exe

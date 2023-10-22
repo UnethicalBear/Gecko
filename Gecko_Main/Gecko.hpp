@@ -128,8 +128,9 @@ protected:
         else {
             throw std::invalid_argument("GECKO ERROR: Invalid register configuration! ");
         }
-
-        for (auto const& [key, val] : this->STATUS_REGISTER_CONFIG) {
+        for (auto pair : this->STATUS_REGISTER_CONFIG) {
+            int key = pair.first;
+            int value = pair.second;
             switch (key) {
             case GECKO_REG_ACC_IS_EVEN:
                 this->STATUS_REGISTER_CONFIG[GECKO_REG_ACC_IS_EVEN] = newValue % 2;
@@ -181,6 +182,10 @@ protected:
         );
     }
 
+    void setRegister(std::string register, int value) {
+    
+    }
+
     const char* readCacheBinaryArray(const char* cacheLevel, const char* cacheAddr) {
         return this->readCache(std::string(cacheLevel), std::string(cacheAddr)).c_str();
     }
@@ -191,6 +196,8 @@ protected:
         }
         this->__internal_stringRegisters.insert({ "ACC",0 });
         this->__internal_stringRegisters.insert({ "PC",0 });
+        this->__internal_stringRegisters.insert({ "ACC_CARRY",0 });
+        this->__internal_stringRegisters.insert({ "ACC_BORROW",0 });
     }
 
     void SetupIntegerRegisters(int noOfRegisters) {
@@ -304,6 +311,7 @@ public:
             int _opcode = RAMWORD / pow(10, this->__config_RAM_word_width - this->__config_opcodeBits);
             int _operand = RAMWORD % (int)pow(10, __config_RAM_word_width - this->__config_opcodeBits);
             interpretOpcodeOperandPair(_opcode, _operand);
+            updateAccumulatorStatusRegister();
         }
         return true;
     }
