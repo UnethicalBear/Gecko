@@ -5,7 +5,6 @@
 class myGecko : public Gecko {
 public:
     using Gecko::Gecko;
-    void interpretOpcodeOperandPair(int opcode, int operand) override { this->updateAccumulatorStatusRegister(); }
 
     bool setup() override {
 
@@ -38,6 +37,27 @@ public:
             });
         return true;
     }
+    void interpretOpcodeOperandPair(int opcode, int operand) override { 
+        
+        switch (opcode) {
+        case 0:
+            // NOP
+            break;
+        case 1:
+            // LDA 
+            this->__internal_stringRegisters["ACC"] = this->__internal_RAM[operand];
+            break;
+        case 2:
+            // STO
+            this->__internal_RAM[operand] = __internal_stringRegisters["ACC"];
+            break;
+        case 3:
+            // ADD 
+        }
+        this->updateAccumulatorStatusRegister(); 
+
+    }
+
 };
 
 int main() {
