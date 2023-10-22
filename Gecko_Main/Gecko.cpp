@@ -1,5 +1,5 @@
 #define GECKO_APP
-#define GECKO_DEBUG
+//#define GECKO_DEBUG
 #include "Gecko.hpp"
 
 class myGecko : public Gecko {
@@ -28,8 +28,6 @@ public:
         // Carry and borrow are 2 and 3 respectively, under the codes ACC_CARRY and ACC_BORROW respectively. 
         // When combined, reference either since their value will be tied together.
         this->SetupStringRegisters({
-                "MDR",
-                "MAR",
                 "OUTC",
                 "OUTD",
                 "GP0",
@@ -38,11 +36,11 @@ public:
         return true;
     }
     void interpretOpcodeOperandPair(int opcode, int operand) override { 
-        
+        std::cout << opcode << " " << operand << std::endl;
         switch (opcode) {
-        case 0:
-            // NOP
-            break;
+        //case 0:
+            // NOP - Nothing happens
+            //break;
         case 1:
             // LDA 
             this->__internal_stringRegisters["ACC"] = this->__internal_RAM[operand];
@@ -53,9 +51,13 @@ public:
             break;
         case 3:
             // ADD 
-        }
-        this->updateAccumulatorStatusRegister(); 
-
+            this->__internal_stringRegisters["ACC"] = this->__internal_stringRegisters["ACC"] + operand;
+            break;
+        case 4:
+            // ADD 
+            this->__internal_stringRegisters["ACC"] = this->__internal_stringRegisters["ACC"] + operand;
+            break;
+        }   
     }
 
 };
