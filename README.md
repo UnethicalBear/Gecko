@@ -45,6 +45,9 @@ int main(){
 }
 ```
 
+## Licensing
+Gecko is released under the MIT license. I would appreciate it if any derivate works or redistributions linked back to this page!
+
 
 ## Docs
 For documentation, see the wiki tab.
